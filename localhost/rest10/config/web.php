@@ -13,16 +13,32 @@ $config = [
     ],
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'dkgjrkdhfw56g45f46gdrsef',
-        ],
+'enableCsrfCookie' => false,
+'parsers' => [
+'application/json' => 'yii\web\JsonParser',
+]
+],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],
+'identityClass' => 'app\models\User',
+'enableAutoLogin' => false,
+'enableSession' => false,
+],
+        'urlManager' => [
+'enablePrettyUrl' => true,
+'enableStrictParsing' => true,
+'showScriptName' => false,
+'rules' => [
+'' => 'site/index',
+'login' => 'site/login',
+'logout' => 'site/logout',
+],
+],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
