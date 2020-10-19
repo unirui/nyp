@@ -11,6 +11,7 @@ namespace app\models;
 use yii\base\Model;
 
 class LoginForm extends Model {
+    
     public $username;
     public $password;
     private $_user=false;
@@ -34,9 +35,10 @@ username or password.');
     public function auth() {
         if ($this->validate()) {
 $this->_user->generateToken(time() + 3600 * 24);
-return $this->_user->save() ? $this->user->
-tokenInfo() : null;
+
+return $this->_user->save(false) ? $this->_user->tokenInfo() : null;
 } else {
+
 return null;
 }
     }

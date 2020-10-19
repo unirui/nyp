@@ -30,4 +30,9 @@ Response::FORMAT_JSON,
 ],
 ];
     }
+    
+    public $serializer = [
+'class' => 'yii\rest\Serializer',
+'collectionEnvelope' => 'items',
+];
 }
