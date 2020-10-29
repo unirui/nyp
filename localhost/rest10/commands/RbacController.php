@@ -8,33 +8,35 @@
 
 namespace app\commands;
 use Yii;
-
 use yii\console\Controller;
 use yii\console\ExitCode;
-
-class RbacController extends Controller {
+/**
+ * Description of RbacController
+ *
+ * @author sidzi
+ */
+class RbacController extends Controller{
     public function actionInit() {
-        $auth = Yii::$app->authManager;
+     $auth = Yii::$app->authManager;
 $admin = $auth->createRole('admin');
-$admin->description = 'ÐÐ´Ð¼Ð¸Ð½Ð¸ÑÑ‚Ñ€Ð°Ñ‚Ð¾Ñ€';
+$admin->description = 'Àäìèíèñòðàòîð';
 $manager = $auth->createRole('manager');
-$manager->description = 'ÐœÐµÐ½ÐµÐ´Ð¶ÐµÑ€';
+$manager->description = 'Ìåíåäæåð';
 $teacher = $auth->createRole('teacher');
-$teacher->description = 'ÐŸÑ€ÐµÐ¿Ð¾Ð´Ð°Ð²Ð°Ñ‚ÐµÐ»ÑŒ';
+$teacher->description = 'Ïðåïîäàâàòåëü';
 $student = $auth->createRole('student');
-$student->description = 'Ð¡Ñ‚ÑƒÐ´ÐµÐ½Ñ‚';
+$student->description = 'Ñòóäåíò';
 $auth->add($admin);
 $auth->add($manager);
 $auth->add($teacher);
 $auth->add($student);
 $adminManager = $auth->createPermission('adminManager');
-$adminManager->description = 'ÐÐ´Ð¼Ð¸Ð½Ð¸ÑÑ‚Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ
-Ñ€ÐµÑÑƒÑ€ÑÐ¾Ð²';
+$adminManager->description = 'Àäìèíèñòðèðîâàíèå ðåñóðñîâ';
 $auth->add($adminManager);
 $auth->addChild($admin, $adminManager);
 $auth->addChild($manager, $adminManager);
 $auth->assign($admin, 1);
 echo "All right\n";
-return ExitCode::OK;
+return ExitCode::OK;   
     }
 }

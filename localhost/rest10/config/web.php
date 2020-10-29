@@ -13,36 +13,19 @@ $config = [
     ],
     'components' => [
         'request' => [
-'enableCsrfCookie' => false,
-'parsers' => [
-'application/json' => 'yii\web\JsonParser',
-]
-],
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
+            'enableCsrfCookie' => false,
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+                ]
             ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-'identityClass' => 'app\models\User',
-'enableAutoLogin' => false,
-'enableSession' => false,
-],
-        'urlManager' => [
-'enablePrettyUrl' => true,
-'enableStrictParsing' => true,
-'showScriptName' => false,
-'rules' => [
-'' => 'site/index',
-'login' => 'site/login',
-'logout' => 'site/logout',
-],
-['class' => 'yii\rest\UrlRule',
-'controller' => 'user',
-'except' => ['delete'],
-],
-],
+            'identityClass' => 'app\models\User',
+            'enableAutoLogin' => true,
+            'enableSession' => false,
+            ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -62,16 +45,32 @@ $config = [
                 ],
             ],
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                '' => 'site/index',
+                'login' => 'site/login',
+                'logout' => 'site/logout',
+                [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'user',
+                'except' => ['delete'],
+                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'teacher',
+                    'except' => ['delete'],
+                 ]
+                ],
+            
             ],
         ],
-        */
-    ],
     'params' => $params,
 ];
 

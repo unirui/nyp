@@ -7,32 +7,35 @@
  */
 
 namespace app\controllers;
-
 use yii\rest\Controller;
-
 use yii\filters\ContentNegotiator;
 use yii\web\Response;
 use yii\filters\auth\QueryParamAuth;
-
-class BaseController extends Controller {
+/**
+ * Description of BaseController
+ *
+ * @author sidzi
+ */
+class BaseController extends Controller{
+    
+    
     public function behaviors() {
-        return [
-'contentNegotiator' => [
-'class' => ContentNegotiator::class,
-'formats' => [
-'application/json' =>
-Response::FORMAT_JSON,
+     return [
+         'contentNegotiator' => [
+             'class' => ContentNegotiator::class,
+             'formats' => [
+                 'application/json' =>Response::FORMAT_JSON,
+                 ],
+             ],
+         'authenticator' => [
+             'class' => QueryParamAuth::className(),
+             'tokenParam' => 'token',
 ],
-],
-'authenticator' => [
-'class' => QueryParamAuth::className(),
-'tokenParam' => 'token',
-],
-];
+];   
     }
     
     public $serializer = [
-'class' => 'yii\rest\Serializer',
-'collectionEnvelope' => 'items',
-];
-}
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'items',
+        ];
+    }
