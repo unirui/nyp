@@ -13,10 +13,10 @@ use Yii;
  * @property int $lesson_num_id
  * @property int $classroom_id
  *
- * @property LessonPlan $lessonPlan
- * @property Day $day
  * @property Classroom $classroom
+ * @property Day $day
  * @property LessonNum $lessonNum
+ * @property LessonPlan $lessonPlan
  */
 class Schedule extends \yii\db\ActiveRecord
 {
@@ -36,10 +36,10 @@ class Schedule extends \yii\db\ActiveRecord
         return [
             [['lesson_plan_id', 'day_id', 'lesson_num_id', 'classroom_id'], 'required'],
             [['lesson_plan_id', 'day_id', 'lesson_num_id', 'classroom_id'], 'integer'],
-            [['lesson_plan_id'], 'exist', 'skipOnError' => true, 'targetClass' => LessonPlan::className(), 'targetAttribute' => ['lesson_plan_id' => 'lesson_plan_id']],
-            [['day_id'], 'exist', 'skipOnError' => true, 'targetClass' => Day::className(), 'targetAttribute' => ['day_id' => 'day_id']],
             [['classroom_id'], 'exist', 'skipOnError' => true, 'targetClass' => Classroom::className(), 'targetAttribute' => ['classroom_id' => 'classroom_id']],
+            [['day_id'], 'exist', 'skipOnError' => true, 'targetClass' => Day::className(), 'targetAttribute' => ['day_id' => 'day_id']],
             [['lesson_num_id'], 'exist', 'skipOnError' => true, 'targetClass' => LessonNum::className(), 'targetAttribute' => ['lesson_num_id' => 'lesson_num_id']],
+            [['lesson_plan_id'], 'exist', 'skipOnError' => true, 'targetClass' => LessonPlan::className(), 'targetAttribute' => ['lesson_plan_id' => 'lesson_plan_id']],
         ];
     }
 
@@ -58,13 +58,13 @@ class Schedule extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[LessonPlan]].
+     * Gets query for [[Classroom]].
      *
-     * @return \yii\db\ActiveQuery|\app\models\queries\LessonPlanQuery
+     * @return \yii\db\ActiveQuery|\app\models\queries\ClassroomQuery
      */
-    public function getLessonPlan()
+    public function getClassroom()
     {
-        return $this->hasOne(LessonPlan::className(), ['lesson_plan_id' => 'lesson_plan_id']);
+        return $this->hasOne(Classroom::className(), ['classroom_id' => 'classroom_id']);
     }
 
     /**
@@ -78,16 +78,6 @@ class Schedule extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Classroom]].
-     *
-     * @return \yii\db\ActiveQuery|\app\models\queries\ClassroomQuery
-     */
-    public function getClassroom()
-    {
-        return $this->hasOne(Classroom::className(), ['classroom_id' => 'classroom_id']);
-    }
-
-    /**
      * Gets query for [[LessonNum]].
      *
      * @return \yii\db\ActiveQuery|\app\models\queries\LessonNumQuery
@@ -95,6 +85,16 @@ class Schedule extends \yii\db\ActiveRecord
     public function getLessonNum()
     {
         return $this->hasOne(LessonNum::className(), ['lesson_num_id' => 'lesson_num_id']);
+    }
+
+    /**
+     * Gets query for [[LessonPlan]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\queries\LessonPlanQuery
+     */
+    public function getLessonPlan()
+    {
+        return $this->hasOne(LessonPlan::className(), ['lesson_plan_id' => 'lesson_plan_id']);
     }
 
     /**

@@ -12,6 +12,7 @@ use Yii;
  * @property int $active
  *
  * @property Special[] $specials
+ * @property Subject[] $subjects
  * @property Teacher[] $teachers
  */
 class Otdel extends \yii\db\ActiveRecord
@@ -30,7 +31,7 @@ class Otdel extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'active'], 'required'],
+            [['name'], 'required'],
             [['active'], 'integer'],
             [['name'], 'string', 'max' => 50],
         ];
@@ -56,6 +57,16 @@ class Otdel extends \yii\db\ActiveRecord
     public function getSpecials()
     {
         return $this->hasMany(Special::className(), ['otdel_id' => 'otdel_id']);
+    }
+
+    /**
+     * Gets query for [[Subjects]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubjects()
+    {
+        return $this->hasMany(Subject::className(), ['otdel_id' => 'otdel_id']);
     }
 
     /**

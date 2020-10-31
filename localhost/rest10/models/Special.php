@@ -31,7 +31,7 @@ class Special extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'otdel_id', 'active'], 'required'],
+            [['name', 'otdel_id'], 'required'],
             [['otdel_id', 'active'], 'integer'],
             [['name'], 'string', 'max' => 250],
             [['otdel_id'], 'exist', 'skipOnError' => true, 'targetClass' => Otdel::className(), 'targetAttribute' => ['otdel_id' => 'otdel_id']],

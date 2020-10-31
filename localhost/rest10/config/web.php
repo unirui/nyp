@@ -15,17 +15,46 @@ $config = [
         'request' => [
             'enableCsrfCookie' => false,
             'parsers' => [
-                'application/json' => 'yii\web\JsonParser',
-                ]
+            'application/json' => 'yii\web\JsonParser',
+            ]
             ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
         'user' => [
             'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
             'enableSession' => false,
+        ],
+            'urlManager' => [
+                'enablePrettyUrl' => true,
+                'enableStrictParsing' => true,
+                'showScriptName' => false,
+                'rules' => [
+                    '' => 'site/index',
+                    'login' => 'site/login',
+                    'logout' => 'site/logout',
+                [
+
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'user',
+                    'except' => ['delete'],
+                ],
+                    [
+                        'class' => 'yii\rest\UrlRule',
+                        'controller' => 'teacher',
+                        'except' => ['delete'],
+                    ],
+                    [
+                        'class' => 'yii\rest\UrlRule',
+                        'controller' => 'student',
+                        'except' => ['delete'],
+                    ],
             ],
+        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -45,32 +74,16 @@ $config = [
                 ],
             ],
         ],
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-],
         'db' => $db,
+        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                '' => 'site/index',
-                'login' => 'site/login',
-                'logout' => 'site/logout',
-                [
-                'class' => 'yii\rest\UrlRule',
-                'controller' => 'user',
-                'except' => ['delete'],
-                 ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'teacher',
-                    'except' => ['delete'],
-                 ]
-                ],
-            
             ],
         ],
+        */
+    ],
     'params' => $params,
 ];
 

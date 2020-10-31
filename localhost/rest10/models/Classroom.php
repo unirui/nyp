@@ -29,7 +29,7 @@ class Classroom extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'active'], 'required'],
+            [['name'], 'required'],
             [['active'], 'integer'],
             [['name'], 'string', 'max' => 20],
         ];

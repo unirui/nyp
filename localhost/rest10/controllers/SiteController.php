@@ -1,22 +1,11 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace app\controllers;
 use Yii;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use yii\web\UnauthorizedHttpException;
-/**
- * Description of SiteController
- *
- * @author sidzi
- */
+
 class SiteController extends BaseController {
     public function behaviors() {
         $behaviors = parent::behaviors();
@@ -26,32 +15,27 @@ class SiteController extends BaseController {
             'actions' => [
                 'logout' => ['post'],
                 'login' => ['post'],
-                ],
-            ];
-        return $behaviors; 
+            ],
+        ];
+        return $behaviors;
     }
+
     public function actionIndex() {
         return 'API for Shedule';
     }
-    
-    public function actionLogin() {
+    public function actionLogin () {
         $model = new LoginForm();
         $model->load(Yii::$app->request->bodyParams, '');
         if ($token = $model->auth()) {
             return $token;
-            
         } else {
             throw new UnauthorizedHttpException('Unauthorized user');
-}   
+        }
     }
-    
     public function actionLogout() {
         if (Yii::$app->user->identity->logout()) {
             return ['message' => 'logout success'];
-            
         }
         throw new UnauthorizedHttpException('Unauthorized user');
     }
-  
-    
-    }
+}

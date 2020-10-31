@@ -12,9 +12,9 @@ use Yii;
  * @property int $subject_id
  * @property int $user_id
  *
+ * @property Subject $subject
  * @property Gruppa $gruppa
  * @property Teacher $user
- * @property Subject $subject
  * @property Schedule[] $schedules
  */
 class LessonPlan extends \yii\db\ActiveRecord
@@ -35,9 +35,9 @@ class LessonPlan extends \yii\db\ActiveRecord
         return [
             [['gruppa_id', 'subject_id', 'user_id'], 'required'],
             [['gruppa_id', 'subject_id', 'user_id'], 'integer'],
+            [['subject_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subject::className(), 'targetAttribute' => ['subject_id' => 'subject_id']],
             [['gruppa_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gruppa::className(), 'targetAttribute' => ['gruppa_id' => 'gruppa_id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Teacher::className(), 'targetAttribute' => ['user_id' => 'user_id']],
-            [['subject_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subject::className(), 'targetAttribute' => ['subject_id' => 'subject_id']],
         ];
     }
 
@@ -52,6 +52,16 @@ class LessonPlan extends \yii\db\ActiveRecord
             'subject_id' => 'Subject ID',
             'user_id' => 'User ID',
         ];
+    }
+
+    /**
+     * Gets query for [[Subject]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\queries\SubjectQuery
+     */
+    public function getSubject()
+    {
+        return $this->hasOne(Subject::className(), ['subject_id' => 'subject_id']);
     }
 
     /**
@@ -72,16 +82,6 @@ class LessonPlan extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(Teacher::className(), ['user_id' => 'user_id']);
-    }
-
-    /**
-     * Gets query for [[Subject]].
-     *
-     * @return \yii\db\ActiveQuery|\app\models\queries\SubjectQuery
-     */
-    public function getSubject()
-    {
-        return $this->hasOne(Subject::className(), ['subject_id' => 'subject_id']);
     }
 
     /**

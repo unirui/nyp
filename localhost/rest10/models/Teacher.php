@@ -11,8 +11,8 @@ use Yii;
  * @property int $otdel_id
  *
  * @property LessonPlan[] $lessonPlans
- * @property User $user
  * @property Otdel $otdel
+ * @property User $user
  */
 class Teacher extends \yii\db\ActiveRecord
 {
@@ -33,8 +33,8 @@ class Teacher extends \yii\db\ActiveRecord
             [['user_id', 'otdel_id'], 'required'],
             [['user_id', 'otdel_id'], 'integer'],
             [['user_id'], 'unique'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'user_id']],
             [['otdel_id'], 'exist', 'skipOnError' => true, 'targetClass' => Otdel::className(), 'targetAttribute' => ['otdel_id' => 'otdel_id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'user_id']],
         ];
     }
 
@@ -60,16 +60,6 @@ class Teacher extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[User]].
-     *
-     * @return \yii\db\ActiveQuery|\app\models\queries\UserQuery
-     */
-    public function getUser()
-    {
-        return $this->hasOne(User::className(), ['user_id' => 'user_id']);
-    }
-
-    /**
      * Gets query for [[Otdel]].
      *
      * @return \yii\db\ActiveQuery|\app\models\queries\OtdelQuery
@@ -80,31 +70,41 @@ class Teacher extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\queries\UserQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['user_id' => 'user_id']);
+    }
+
+    /**
      * {@inheritdoc}
-     * @return \app\models\queries\TeacherQuery the active query used by this AR class.
+     * @return \app\models\queries\UserQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \app\models\queries\TeacherQuery(get_called_class());
+        return new \app\models\queries\UserQuery(get_called_class());
     }
-    
-    public function loadAndSave($bodyParams) {
-        $user = ($this->isNewRecord) ? new User() :User::findOne($this->user_id);
+
+    public function loadAndSave($bodyParams)
+    {
+        $user = ($this->isNewRecord) ? new User() : User::findOne($this->user_id);
         if ($user->load($bodyParams, '') && $user->save()) {
             if ($this->isNewRecord) {
                 $this->user_id = $user->user_id;
-                
             }
             if ($this->load($bodyParams, '') && $this->save()) {
                 return true;
-                
             }
-            
-            }
-            return false;
+        }
+
+        return false;
     }
-    
-    public function fields() {
+
+    public function fields()
+    {
         $fields = parent::fields();
         return array_merge($fields, [
             'lastname' => function () { return $this->user->lastname;},
@@ -114,8 +114,10 @@ class Teacher extends \yii\db\ActiveRecord
             'gender_id' => function () { return $this->user->gender_id;},
             'genderName' => function () { return $this->user->gender->name;},
             'birthday' => function () { return $this->user->birthday;},
+            'roleName' => function () { return $this->user->roleName;},
             'active' => function () { return $this->user->active;},
             'otdelName' => function () { return $this->otdel->name;},
-                                                                                            ]);
+        ]);
     }
+
 }

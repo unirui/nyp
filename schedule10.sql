@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Окт 29 2020 г., 19:42
+-- Время создания: Окт 31 2020 г., 20:35
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.1.33
 
@@ -33,6 +33,17 @@ CREATE TABLE `auth_assignment` (
   `created_at` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Дамп данных таблицы `auth_assignment`
+--
+
+INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
+('admin', '1', 1604164392),
+('manager', '5', 1604165111),
+('student', '6', 1604165306),
+('student', '7', 1604165564),
+('teacher', '2', 1604164852);
+
 -- --------------------------------------------------------
 
 --
@@ -49,6 +60,17 @@ CREATE TABLE `auth_item` (
   `updated_at` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Дамп данных таблицы `auth_item`
+--
+
+INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
+('admin', 1, 'Администратор', NULL, NULL, 1604164392, 1604164392),
+('adminManager', 2, 'Администрирование\n        ресурсов', NULL, NULL, 1604164392, 1604164392),
+('manager', 1, 'Менеджер', NULL, NULL, 1604164392, 1604164392),
+('student', 1, 'Студент', NULL, NULL, 1604164392, 1604164392),
+('teacher', 1, 'Преподаватель', NULL, NULL, 1604164392, 1604164392);
+
 -- --------------------------------------------------------
 
 --
@@ -59,6 +81,14 @@ CREATE TABLE `auth_item_child` (
   `parent` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Дамп данных таблицы `auth_item_child`
+--
+
+INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
+('admin', 'adminManager'),
+('manager', 'adminManager');
 
 -- --------------------------------------------------------
 
@@ -141,6 +171,13 @@ CREATE TABLE `gruppa` (
   `date_end` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `gruppa`
+--
+
+INSERT INTO `gruppa` (`gruppa_id`, `name`, `special_id`, `date_begin`, `date_end`) VALUES
+(1, 'НД20', 2, '2020-09-01', '2023-03-31');
+
 -- --------------------------------------------------------
 
 --
@@ -193,11 +230,11 @@ CREATE TABLE `migration` (
 --
 
 INSERT INTO `migration` (`version`, `apply_time`) VALUES
-('m000000_000000_base', 1603975307),
-('m140506_102106_rbac_init', 1603975315),
-('m170907_052038_rbac_add_index_on_auth_assignment_user_id', 1603975315),
-('m180523_151638_rbac_updates_indexes_without_prefix', 1603975316),
-('m200409_110543_rbac_update_mssql_trigger', 1603975316);
+('m000000_000000_base', 1604163378),
+('m140506_102106_rbac_init', 1604163391),
+('m170907_052038_rbac_add_index_on_auth_assignment_user_id', 1604163391),
+('m180523_151638_rbac_updates_indexes_without_prefix', 1604163391),
+('m200409_110543_rbac_update_mssql_trigger', 1604163391);
 
 -- --------------------------------------------------------
 
@@ -270,6 +307,13 @@ CREATE TABLE `student` (
   `num_zach` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `student`
+--
+
+INSERT INTO `student` (`user_id`, `gruppa_id`, `num_zach`) VALUES
+(7, 1, '14745');
+
 -- --------------------------------------------------------
 
 --
@@ -294,6 +338,13 @@ CREATE TABLE `teacher` (
   `user_id` bigint(20) NOT NULL,
   `otdel_id` smallint(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `teacher`
+--
+
+INSERT INTO `teacher` (`user_id`, `otdel_id`) VALUES
+(5, 1);
 
 -- --------------------------------------------------------
 
@@ -320,9 +371,11 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `lastname`, `firstname`, `patronymic`, `login`, `pass`, `token`, `expired_at`, `gender_id`, `birthday`, `active`) VALUES
-(1, 'Смит', 'Джон', 'Тимофеевич', 'admin', '$2y$13$u9hGuhVBf9yCSNeLI4gW8OB8FkdDY7Qc28oiuBEeYsmmJNeTs55ca', 'EU_voJAS1JC76xr3SF2r3oQ9JO4jFb7D', 1604069241, 1, '2000-07-10', 1),
-(2, 'Smith', 'Джон', 'Тимофеевич', 'adminwewe85', '$2y$13$uS4BIxwI/g1cmGDLBeshY.vgfSQ9oSIuQjNW//h6TD58q9zW/vWPC', '', NULL, 1, '2000-07-10', 1),
-(4, 'Ivanov', 'Джон', 'Тимофеевич', 'Num1', '$2y$13$F6LdG8/ifSVhq1/kVWa5FeLO9K0NxK76WJc1i5BCYJeLPM9Jc3ija', '', NULL, 1, '2000-07-10', 1);
+(1, 'Смит', 'Джон', 'Тимофеевич', 'admin', '$2y$13$u9hGuhVBf9yCSNeLI4gW8OB8FkdDY7Qc28oiuBEeYsmmJNeTs55ca', 'X3lWNlnSj222BmqwfnpWv0ojNHaOhePB', 1604250877, 1, '2000-07-10', 1),
+(2, 'Смит', 'Иван', 'Ашотович', 'adminwewe85', '$2y$13$Y3nwSP6m2UYO9hbvv/ZAXenz3VsPQxpLIWNDTu2T79NUyqfayoB7G', '', NULL, 1, '2000-07-10', 1),
+(4, 'Ivanov', 'Джон', 'Тимофеевич', 'Num1', '$2y$13$F6LdG8/ifSVhq1/kVWa5FeLO9K0NxK76WJc1i5BCYJeLPM9Jc3ija', '', NULL, 1, '2000-07-10', 1),
+(5, 'Ivanko', 'Alex', 'Rokkkk', 'stupid', '$2y$13$dUNCm47XatId7.t2OiOsCOEM/qi8GTDOvkvC7l6cPyuywkPu76WOu', NULL, NULL, 1, '2000-07-10', 1),
+(7, 'Петров', 'Петр', 'Петрович', 'petro', '$2y$13$J7tB6zLThBsRTvyuQnq9cOGOx.RI6kliEbyF6bYTVub0L7zD25jHC', NULL, NULL, 1, '2000-07-10', 1);
 
 --
 -- Индексы сохранённых таблиц
@@ -485,7 +538,7 @@ ALTER TABLE `gender`
 -- AUTO_INCREMENT для таблицы `gruppa`
 --
 ALTER TABLE `gruppa`
-  MODIFY `gruppa_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `gruppa_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `lesson_num`
@@ -527,7 +580,7 @@ ALTER TABLE `subject`
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
