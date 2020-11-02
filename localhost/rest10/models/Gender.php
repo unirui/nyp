@@ -53,4 +53,22 @@ class Gender extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::className(), ['gender_id' => 'gender_id']);
     }
+    
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'gender_id' => function () { return $this->gender_id;},
+        
+
+        ]);
+    }
+    /**
+     * {@inheritdoc}
+     * @return \app\models\queries\UserQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new \app\models\queries\UserQuery(get_called_class());
+    }
 }

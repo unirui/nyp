@@ -56,4 +56,22 @@ class LessonNum extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Schedule::className(), ['lesson_num_id' => 'lesson_num_id']);
     }
+    
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'lesson_num_id' => function () { return $this->lesson_num_id;},
+            'name' => function () { return $this->name;},
+            'time_lesson' => function () { return $this->time_lesson;},
+        ]);
+    }
+    /**
+     * {@inheritdoc}
+     * @return \app\models\queries\UserQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new \app\models\queries\UserQuery(get_called_class());
+    }
 }

@@ -56,4 +56,39 @@ class Classroom extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Schedule::className(), ['classroom_id' => 'classroom_id']);
     }
+    
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'classroom_id' => function () { return $this->classroom_id;},
+            'name' => function () { return $this->name;},
+            'active' => function () { return $this->active;},
+        ]);
+    }
+    
+    /**
+     * Gets query for [[Otdel]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\queries\OtdelQuery
+     */
+    public static function find()
+    {
+        return new \app\models\queries\UserQuery(get_called_class());
+    }
+    
+    public function loadAndSave($bodyParams)
+    {
+        $classroom = ($this->isNewRecord) ? new Classroom() : Classroom::findOne($this->classroom_id);
+        if ($classroom->load($bodyParams, '') && $classroom->save()) {
+            if ($this->isNewRecord) {
+                $this->classroom_id = $classroom->classroom_id;
+            }
+            if ($this->load($bodyParams, '') && $this->save()) {
+                return true;
+            }
 }
+
+        return false;
+}}
+

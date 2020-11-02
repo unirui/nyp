@@ -54,7 +54,7 @@ class Special extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Gruppas]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\app\models\queries\GruppaQuery
      */
     public function getGruppas()
     {
@@ -64,10 +64,44 @@ class Special extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Otdel]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\app\models\queries\OtdelQuery
      */
     public function getOtdel()
     {
         return $this->hasOne(Otdel::className(), ['otdel_id' => 'otdel_id']);
+    }
+    
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'special_id' => function () { return $this->special_id;},
+            'otdelName' => function () { return $this->otdel->name;},
+            'active' => function () { return $this->active;},
+        ]);
+    }
+    /**
+     * {@inheritdoc}
+     * @return \app\models\queries\UserQuery the active query used by this AR class.
+     */
+    
+    public static function find()
+    {
+        return new \app\models\queries\UserQuery(get_called_class());
+    }
+    
+    public function loadAndSave($bodyParams)
+    {
+        $special = ($this->isNewRecord) ? new Special() :
+        Special::findOne($this->special_id);
+        if ($special->load($bodyParams, '') && $special->save()) {
+            if ($this->isNewRecord) {
+                $this->special_id = $special->special_id;
+            }
+            if ($this->load($bodyParams, '') && $this->save()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
