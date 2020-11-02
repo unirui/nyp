@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Окт 31 2020 г., 20:35
+-- Время создания: Ноя 02 2020 г., 10:59
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.1.33
 
@@ -114,6 +114,14 @@ CREATE TABLE `classroom` (
   `name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `active` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `classroom`
+--
+
+INSERT INTO `classroom` (`classroom_id`, `name`, `active`) VALUES
+(1, '1210', 1),
+(2, '1409', 1);
 
 -- --------------------------------------------------------
 
@@ -255,7 +263,8 @@ CREATE TABLE `otdel` (
 INSERT INTO `otdel` (`otdel_id`, `name`, `active`) VALUES
 (1, 'Программирование', 1),
 (2, 'Общеобразовательные дисциплины', 1),
-(3, 'Строительство', 1);
+(3, 'Строительство', 1),
+(4, 'Экономика', 1);
 
 -- --------------------------------------------------------
 
@@ -293,7 +302,8 @@ INSERT INTO `special` (`special_id`, `name`, `otdel_id`, `active`) VALUES
 (2, 'Нефтегазовое дело', 2, 1),
 (3, 'Строительство и эксплуатация зданий и сооружений', 3, 1),
 (4, 'Электроснабжение', 3, 1),
-(5, 'Вычислительная техника и программное обеспечение', 1, 1);
+(5, 'Вычислительная техника и программное обеспечение', 1, 1),
+(6, 'Бизнес-информатика', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -371,7 +381,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `lastname`, `firstname`, `patronymic`, `login`, `pass`, `token`, `expired_at`, `gender_id`, `birthday`, `active`) VALUES
-(1, 'Смит', 'Джон', 'Тимофеевич', 'admin', '$2y$13$u9hGuhVBf9yCSNeLI4gW8OB8FkdDY7Qc28oiuBEeYsmmJNeTs55ca', 'X3lWNlnSj222BmqwfnpWv0ojNHaOhePB', 1604250877, 1, '2000-07-10', 1),
+(1, 'Смит', 'Джон', 'Тимофеевич', 'admin', '$2y$13$u9hGuhVBf9yCSNeLI4gW8OB8FkdDY7Qc28oiuBEeYsmmJNeTs55ca', '24dwuoMOwBnpYKXLOuwwgn1fBbL_2eaf', 1604389279, 1, '2000-07-10', 1),
 (2, 'Смит', 'Иван', 'Ашотович', 'adminwewe85', '$2y$13$Y3nwSP6m2UYO9hbvv/ZAXenz3VsPQxpLIWNDTu2T79NUyqfayoB7G', '', NULL, 1, '2000-07-10', 1),
 (4, 'Ivanov', 'Джон', 'Тимофеевич', 'Num1', '$2y$13$F6LdG8/ifSVhq1/kVWa5FeLO9K0NxK76WJc1i5BCYJeLPM9Jc3ija', '', NULL, 1, '2000-07-10', 1),
 (5, 'Ivanko', 'Alex', 'Rokkkk', 'stupid', '$2y$13$dUNCm47XatId7.t2OiOsCOEM/qi8GTDOvkvC7l6cPyuywkPu76WOu', NULL, NULL, 1, '2000-07-10', 1),
@@ -520,7 +530,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблицы `classroom`
 --
 ALTER TABLE `classroom`
-  MODIFY `classroom_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `classroom_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `day`
@@ -556,7 +566,7 @@ ALTER TABLE `lesson_plan`
 -- AUTO_INCREMENT для таблицы `otdel`
 --
 ALTER TABLE `otdel`
-  MODIFY `otdel_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `otdel_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `schedule`
@@ -568,7 +578,7 @@ ALTER TABLE `schedule`
 -- AUTO_INCREMENT для таблицы `special`
 --
 ALTER TABLE `special`
-  MODIFY `special_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `special_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `subject`
