@@ -81,7 +81,7 @@ class LessonPlan extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(Teacher::className(), ['user_id' => 'user_id']);
+        return $this->hasOne(User::className(), ['user_id' => 'user_id']);
     }
 
     /**
@@ -101,5 +101,33 @@ class LessonPlan extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \app\models\queries\LessonPlanQuery(get_called_class());
+    }
+    
+    public function loadAndSave($bodyParams)
+    {
+        $lessonplan = ($this->isNewRecord) ? new LessonPlan() :
+        LessonPlan::findOne($this->lesson_plan_id);
+        if ($lessonplan->load($bodyParams, '') && $lessonplan->save()) {
+            if ($this->isNewRecord) {
+                $this->lesson_plan_id = $lessonplan->lesson_plan_id;
+            }
+            if ($this->load($bodyParams, '') && $this->save()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'lesson_plan_id' => function () { return $this->lesson_plan_id;},
+            'gruppa' => function () { return $this->gruppa->name;},
+            'subject' => function () { return $this->subject->name;},
+            'lastname' => function () { return $this->user->lastname;},
+            'firstname' => function () { return $this->user->firstname;},
+            'patronymic' => function () { return $this->user->patronymic;},
+        ]);
     }
 }
