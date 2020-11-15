@@ -75,5 +75,10 @@ class ScheduleController extends BaseController{
         }
         return $schedule;
     }
-    
+     public function actionDelete($id)
+    {
+           $shedule = $this->findModel($id)->delete();
+           return "message: Schedule №$id deleted ";       
+        
+}
 }

@@ -7,14 +7,16 @@
  */
 
 namespace app\controllers;
-use yii\data\ActiveDataProvider;
-use app\models\LessonPlan;
-use app\models\Schedule;
+
 use Yii;
 use yii\helpers\Url;
 use yii\web\ServerErrorHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\NotAcceptableHttpException;
+use yii\data\ActiveDataProvider;
+use app\models\LessonPlan;
+use app\models\Schedule;
+use yii\web\MethodNotAllowedHttpException;
 
 /**
  * Description of LessonPlanController
@@ -51,6 +53,20 @@ class LessonPlanController  extends BaseController{
         return $this->findModel($id);
     }
     
+    public function actionDelete($id)
+    {
+        $lessonplan = $this->findModel($id);
+        if (!Schedule::find()->where(['lesson_plan_id' => $id])->exists()){
+            $lessonplan = $this->findModel($id)->delete();
+            if ($lessonplan!=null){
+                return "message: Lesson plan №$id deleted ";
+            }
+        }
+        else{
+            throw new NotAcceptableHttpException("message: Exist schedule");
+        }
+        
+    }
     public function saveModel($lessonplan)
     {
         if ($lessonplan->loadAndSave(Yii::$app->getRequest()->getBodyParams())) {
