@@ -14,6 +14,7 @@ use Yii;
 use yii\helpers\Url;
 use yii\web\ServerErrorHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\NotAcceptableHttpException;
 
 /**
  * Description of LessonPlanController
@@ -49,18 +50,7 @@ class LessonPlanController  extends BaseController{
     {
         return $this->findModel($id);
     }
-    public function actionDelete($id)
-    {
-        if (!Schedule::find()->where(['lesson_plan_id' => $id])->exists()){
-            $lessonplan = $this->findModel($id)->delete();
-            if ($lessonplan==1){
-                return "Lesson plan №$id deleted.";
-            }
-        }
-        else{
-            return "Data can't be deleted.";
-        }
-    }
+    
     public function saveModel($lessonplan)
     {
         if ($lessonplan->loadAndSave(Yii::$app->getRequest()->getBodyParams())) {

@@ -98,6 +98,11 @@ $config = [
                 'controller' => 'lesson-plan',
 
                 ],
+                    [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'schedule',
+                'except' => ['delete'],
+                ],     
             ],
         ],
         'errorHandler' => [

@@ -53,7 +53,7 @@ class Schedule extends \yii\db\ActiveRecord
             'lesson_plan_id' => 'Lesson Plan ID',
             'day_id' => 'Day ID',
             'lesson_num_id' => 'Lesson Num ID',
-            'classroom_id' => 'Classroom ID',
+            'classroom_id' => 'Classroom ID'
         ];
     }
 
@@ -75,6 +75,16 @@ class Schedule extends \yii\db\ActiveRecord
     public function getDay()
     {
         return $this->hasOne(Day::className(), ['day_id' => 'day_id']);
+    }
+    
+    /**
+     * Gets query for [[Gruppa]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\queries\GruppaQuery
+     */
+    public function getGruppa()
+    {
+        return $this->hasOne(Gruppa::className(), ['gruppa_id' => 'gruppa_id']);
     }
 
     /**
@@ -104,5 +114,37 @@ class Schedule extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \app\models\queries\ScheduleQuery(get_called_class());
+    }
+    
+    public function loadAndSave($bodyParams)
+    {
+        $schedule = ($this->isNewRecord) ? new Schedule() :
+        Schedule::findOne($this->schedule_id);
+        if ($schedule->load($bodyParams, '') && $schedule->save()) {
+            if ($this->isNewRecord) {
+                $this->schedule_id = $schedule->schedule_id;
+            }
+            if ($this->load($bodyParams, '') && $this->save()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'gruppa_id' => function () { return $this->lessonPlan->gruppa_id;},
+            'gruppa_name' => function () { return $this->lessonPlan->gruppa->name;},       
+            'subject_id' => function () { return $this->lessonPlan->subject_id;},
+            'subject_name' => function () { return $this->lessonPlan->subject->name;},
+            'userName' => function () { return $this->lessonPlan->user->firstname;},
+            'userLastname' => function () { return $this->lessonPlan->user->lastname;},
+            'userPatronymic' => function () { return $this->lessonPlan->user->patronymic;},
+            'dayName' => function () { return $this->day->name;},
+            'lessonnumName' => function () { return $this->lessonNum->name;},
+            'classroomName' => function () { return $this->classroom->name;},
+        ]);
     }
 }

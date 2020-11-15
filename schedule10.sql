@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 02 2020 г., 10:59
+-- Время создания: Ноя 15 2020 г., 10:40
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.1.33
 
@@ -184,7 +184,10 @@ CREATE TABLE `gruppa` (
 --
 
 INSERT INTO `gruppa` (`gruppa_id`, `name`, `special_id`, `date_begin`, `date_end`) VALUES
-(1, 'НД20', 2, '2020-09-01', '2023-03-31');
+(1, 'НД20', 2, '2020-09-01', '2023-03-31'),
+(2, 'Э20', 4, '2020-09-01', '2023-03-31'),
+(3, 'БИ20', 6, '2020-09-01', '2023-03-31'),
+(4, 'СЭЗС20', 3, '2020-09-01', '2023-05-31');
 
 -- --------------------------------------------------------
 
@@ -221,6 +224,16 @@ CREATE TABLE `lesson_plan` (
   `subject_id` int(11) NOT NULL,
   `user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `lesson_plan`
+--
+
+INSERT INTO `lesson_plan` (`lesson_plan_id`, `gruppa_id`, `subject_id`, `user_id`) VALUES
+(1, 1, 1, 5),
+(2, 2, 5, 4),
+(3, 3, 3, 7),
+(4, 4, 4, 5);
 
 -- --------------------------------------------------------
 
@@ -280,6 +293,15 @@ CREATE TABLE `schedule` (
   `classroom_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `schedule`
+--
+
+INSERT INTO `schedule` (`schedule_id`, `lesson_plan_id`, `day_id`, `lesson_num_id`, `classroom_id`) VALUES
+(1, 2, 2, 4, 2),
+(2, 1, 5, 1, 1),
+(3, 4, 4, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -338,6 +360,17 @@ CREATE TABLE `subject` (
   `active` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `subject`
+--
+
+INSERT INTO `subject` (`subject_id`, `name`, `otdel_id`, `hours`, `active`) VALUES
+(1, 'предпринимательство', 1, 76, 1),
+(2, 'философия', 4, 48, 1),
+(3, 'математика', 5, 120, 1),
+(4, 'НВП', 1, 94, 1),
+(5, 'русская литература', 3, 102, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -354,7 +387,9 @@ CREATE TABLE `teacher` (
 --
 
 INSERT INTO `teacher` (`user_id`, `otdel_id`) VALUES
-(5, 1);
+(5, 1),
+(4, 2),
+(7, 3);
 
 -- --------------------------------------------------------
 
@@ -381,7 +416,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `lastname`, `firstname`, `patronymic`, `login`, `pass`, `token`, `expired_at`, `gender_id`, `birthday`, `active`) VALUES
-(1, 'Смит', 'Джон', 'Тимофеевич', 'admin', '$2y$13$u9hGuhVBf9yCSNeLI4gW8OB8FkdDY7Qc28oiuBEeYsmmJNeTs55ca', '24dwuoMOwBnpYKXLOuwwgn1fBbL_2eaf', 1604389279, 1, '2000-07-10', 1),
+(1, 'Смит', 'Джон', 'Тимофеевич', 'admin', '$2y$13$u9hGuhVBf9yCSNeLI4gW8OB8FkdDY7Qc28oiuBEeYsmmJNeTs55ca', 'd1Ot87IFMQRDEzQWyJxmVWRhFqYuXTt_', 1605510497, 1, '2000-07-10', 1),
 (2, 'Смит', 'Иван', 'Ашотович', 'adminwewe85', '$2y$13$Y3nwSP6m2UYO9hbvv/ZAXenz3VsPQxpLIWNDTu2T79NUyqfayoB7G', '', NULL, 1, '2000-07-10', 1),
 (4, 'Ivanov', 'Джон', 'Тимофеевич', 'Num1', '$2y$13$F6LdG8/ifSVhq1/kVWa5FeLO9K0NxK76WJc1i5BCYJeLPM9Jc3ija', '', NULL, 1, '2000-07-10', 1),
 (5, 'Ivanko', 'Alex', 'Rokkkk', 'stupid', '$2y$13$dUNCm47XatId7.t2OiOsCOEM/qi8GTDOvkvC7l6cPyuywkPu76WOu', NULL, NULL, 1, '2000-07-10', 1),
@@ -548,7 +583,7 @@ ALTER TABLE `gender`
 -- AUTO_INCREMENT для таблицы `gruppa`
 --
 ALTER TABLE `gruppa`
-  MODIFY `gruppa_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `gruppa_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `lesson_num`
@@ -560,7 +595,7 @@ ALTER TABLE `lesson_num`
 -- AUTO_INCREMENT для таблицы `lesson_plan`
 --
 ALTER TABLE `lesson_plan`
-  MODIFY `lesson_plan_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `lesson_plan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `otdel`
@@ -572,7 +607,7 @@ ALTER TABLE `otdel`
 -- AUTO_INCREMENT для таблицы `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `special`
@@ -584,7 +619,7 @@ ALTER TABLE `special`
 -- AUTO_INCREMENT для таблицы `subject`
 --
 ALTER TABLE `subject`
-  MODIFY `subject_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `subject_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `user`
